@@ -28,27 +28,12 @@ static_resources:
                 route:
                   cluster: grpc_exchange
                   timeout: 60s
-              - match: {prefix: "/rollup_state.RollupState"}
-                route:
-                  cluster: grpc_rollup
-                  timeout: 60s
           http_filters:
           - name: envoy.filters.http.grpc_json_transcoder
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
               proto_descriptor: "/tmp/envoy/matchengine.pb"
               services: ["matchengine.Matchengine"]
-              convert_grpc_status: true
-              print_options:
-                add_whitespace: true
-                always_print_primitive_fields: true
-                always_print_enums_as_ints: false
-                preserve_proto_field_names: true
-          - name: envoy.filters.http.grpc_json_transcoder
-            typed_config:
-              "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
-              proto_descriptor: "/tmp/envoy/rollup.pb"
-              services: ["rollup_state.RollupState"]
               convert_grpc_status: true
               print_options:
                 add_whitespace: true
@@ -76,26 +61,6 @@ static_resources:
               socket_address:
                 address: host.docker.internal
                 port_value: 50051
-
-  - name: grpc_rollup
-    type: LOGICAL_DNS
-    lb_policy: ROUND_ROBIN
-    dns_lookup_family: V4_ONLY
-    typed_extension_protocol_options:
-      envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
-        "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
-        explicit_http_config:
-          http2_protocol_options: {}
-    load_assignment:
-      cluster_name: grpc_rollup
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: host.docker.internal
-                port_value: 50061
-
 
   - name: rust_http
     type: LOGICAL_DNS
