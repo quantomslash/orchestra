@@ -10,7 +10,7 @@ fmt: fmtproto fmtrs
 
 # Format proto files
 fmtproto:
-	clang-format -i proto/exchange/matchengine.proto proto/rollup/rollup.proto
+	clang-format -i proto/exchange/matchengine.proto
 
 # Format Rust code
 fmtrs:
@@ -19,7 +19,6 @@ fmtrs:
 # Generate PB files
 genpb:
 	cd proto && protoc -Ithird_party/googleapis -I. --include_imports --include_source_info --descriptor_set_out=exchange/matchengine.pb exchange/matchengine.proto
-	cd proto && protoc -Ithird_party/googleapis -I. --include_imports --include_source_info --descriptor_set_out=rollup/rollup.pb rollup/rollup.proto
 
 # Generate Swagger JSON files
 gensw: goinstall
