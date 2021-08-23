@@ -10,5 +10,4 @@ services:
     environment:
       URLS: "[
         { url: \"./api/exchange/matchengine.swagger.json\", name: \"Exchange\" },
-        { url: \"./api/rollup/rollup.swagger.json\", name: \"Rollup\" }
       ]"

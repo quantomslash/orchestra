@@ -23,7 +23,6 @@ genpb:
 # Generate Swagger JSON files
 gensw: goinstall
 	protoc -I. -Iproto/third_party/googleapis --openapiv2_out . --openapiv2_opt logtostderr=true proto/exchange/matchengine.proto
-	protoc -I. -Iproto/third_party/googleapis --openapiv2_out . --openapiv2_opt logtostderr=true proto/rollup/rollup.proto
 
 # Install go dependencies
 goinstall:

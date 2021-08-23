@@ -7,7 +7,7 @@ Orchestra is a project of one `docker-compose` for full [fluidex-backend](https:
 
 It contains major features as below (for now):
 
-* RPC protocol and generation for [dingir-exchange](https://github.com/fluidex/dingir-exchange) and [rollup-state-manager](https://github.com/fluidex/rollup-state-manager)
+* RPC protocol and generation for [dingir-exchange](https://github.com/fluidex/dingir-exchange)
 * `docker-compose` for full [fluidex-backend](https://github.com/fluidex/fluidex-backend)
 * `docker-compose` for Swagger UI
 
