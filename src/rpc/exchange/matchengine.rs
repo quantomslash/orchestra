@@ -1,3 +1,15 @@
+///
+#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
+pub struct UserInfo {
+    #[prost(uint32, tag = "1")]
+    pub user_id: u32,
+    #[prost(string, tag = "2")]
+    pub l1_address: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub l2_pubkey: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub tx_hash: ::core::option::Option<::prost::alloc::string::String>,
+}
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct BalanceQueryRequest {
     #[prost(uint32, tag = "1")]
@@ -58,8 +70,16 @@ pub mod asset_list_response {
         pub symbol: ::prost::alloc::string::String,
         #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
-        #[prost(uint32, tag = "3")]
+        #[prost(int32, tag = "3")]
+        pub chain_id: i32,
+        #[prost(string, tag = "4")]
+        pub token_address: ::prost::alloc::string::String,
+        #[prost(uint32, tag = "5")]
         pub precision: u32,
+        #[prost(string, tag = "6")]
+        pub logo_uri: ::prost::alloc::string::String,
+        #[prost(int32, tag = "7")]
+        pub inner_id: i32,
     }
 }
 ///
@@ -118,6 +138,11 @@ pub struct OrderPutRequest {
     /// Ensures an Limit order is only subject to Maker Fees
     #[prost(bool, tag = "10")]
     pub post_only: bool,
+    /// (ignored for Market orders).
+    ///
+    /// bjj signature used in Fluidex
+    #[prost(string, tag = "11")]
+    pub signature: ::prost::alloc::string::String,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderInfo {
@@ -352,6 +377,8 @@ pub struct TransferRequest {
     pub delta: ::prost::alloc::string::String,
     #[prost(string, tag = "5")]
     pub memo: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
+    pub signature: ::prost::alloc::string::String,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct TransferResponse {
@@ -487,6 +514,21 @@ pub mod matchengine_client {
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
+        }
+        pub async fn register_user(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UserInfo>,
+        ) -> Result<tonic::Response<super::UserInfo>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/matchengine.Matchengine/RegisterUser");
+            self.inner.unary(request.into_request(), path, codec).await
         }
         pub async fn balance_query(
             &mut self,
@@ -745,6 +787,10 @@ pub mod matchengine_server {
     #[doc = "Generated trait containing gRPC methods that should be implemented for use with MatchengineServer."]
     #[async_trait]
     pub trait Matchengine: Send + Sync + 'static {
+        async fn register_user(
+            &self,
+            request: tonic::Request<super::UserInfo>,
+        ) -> Result<tonic::Response<super::UserInfo>, tonic::Status>;
         async fn balance_query(
             &self,
             request: tonic::Request<super::BalanceQueryRequest>,
@@ -856,6 +902,37 @@ pub mod matchengine_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
+                "/matchengine.Matchengine/RegisterUser" => {
+                    #[allow(non_camel_case_types)]
+                    struct RegisterUserSvc<T: Matchengine>(pub Arc<T>);
+                    impl<T: Matchengine> tonic::server::UnaryService<super::UserInfo> for RegisterUserSvc<T> {
+                        type Response = super::UserInfo;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::UserInfo>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).register_user(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = RegisterUserSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
+                            accept_compression_encodings,
+                            send_compression_encodings,
+                        );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 "/matchengine.Matchengine/BalanceQuery" => {
                     #[allow(non_camel_case_types)]
                     struct BalanceQuerySvc<T: Matchengine>(pub Arc<T>);
