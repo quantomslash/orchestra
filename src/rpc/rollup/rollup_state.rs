@@ -20,8 +20,8 @@ pub mod l2_blocks_query_response {
         pub block_height: i64,
         #[prost(string, tag = "2")]
         pub merkle_root: ::prost::alloc::string::String,
-        #[prost(int64, tag = "3")]
-        pub block_time: i64,
+        #[prost(double, tag = "3")]
+        pub block_time: f64,
     }
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
@@ -31,27 +31,26 @@ pub struct L2BlockQueryRequest {
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct L2BlockQueryResponse {
-    #[prost(uint64, tag = "1")]
-    pub tx_num: u64,
-    #[prost(uint64, tag = "2")]
-    pub real_tx_num: u64,
-    #[prost(int64, tag = "3")]
-    pub created_time: i64,
-    #[prost(enumeration = "BlockStatus", tag = "4")]
-    pub status: i32,
-    #[prost(string, tag = "5")]
+    #[prost(string, tag = "1")]
     pub new_root: ::prost::alloc::string::String,
-    #[prost(string, tag = "6")]
-    pub l1_tx_hash: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag = "7")]
+    #[prost(double, tag = "2")]
+    pub created_time: f64,
+    #[prost(uint64, tag = "3")]
+    pub tx_num: u64,
+    #[prost(uint64, tag = "4")]
+    pub real_tx_num: u64,
+    #[prost(enumeration = "BlockStatus", tag = "5")]
+    pub status: i32,
+    #[prost(message, repeated, tag = "6")]
     pub txs: ::prost::alloc::vec::Vec<l2_block_query_response::EncodedTx>,
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag = "7")]
     pub decoded_txs: ::prost::alloc::vec::Vec<l2_block_query_response::DecodedTx>,
-    #[prost(enumeration = "TxType", repeated, tag = "9")]
+    #[prost(enumeration = "TxType", repeated, tag = "8")]
     pub txs_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `L2BlockQueryResponse`.
 pub mod l2_block_query_response {
+    /// TODO: Adds `l1_tx_hash: string`.
     #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
     pub struct EncodedTx {
         /// TODO: Fixes to decoding TX in issue #132.
@@ -153,17 +152,17 @@ pub struct SpotTradeTx {
     pub account2_token_sell_old_balance: ::prost::alloc::string::String,
 }
 #[derive(
-    serde::Serialize,
-    serde::Deserialize,
-    Clone,
-    Copy,
-    Debug,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    ::prost::Enumeration,
+serde::Serialize,
+serde::Deserialize,
+Clone,
+Copy,
+Debug,
+PartialEq,
+Eq,
+Hash,
+PartialOrd,
+Ord,
+::prost::Enumeration,
 )]
 #[repr(i32)]
 pub enum BlockStatus {
@@ -172,17 +171,17 @@ pub enum BlockStatus {
     Verified = 2,
 }
 #[derive(
-    serde::Serialize,
-    serde::Deserialize,
-    Clone,
-    Copy,
-    Debug,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    ::prost::Enumeration,
+serde::Serialize,
+serde::Deserialize,
+Clone,
+Copy,
+Debug,
+PartialEq,
+Eq,
+Hash,
+PartialOrd,
+Ord,
+::prost::Enumeration,
 )]
 #[repr(i32)]
 pub enum TxType {
@@ -204,20 +203,20 @@ pub mod rollup_state_client {
     impl RollupStateClient<tonic::transport::Channel> {
         #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
+            where
+                D: std::convert::TryInto<tonic::transport::Endpoint>,
+                D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
             Ok(Self::new(conn))
         }
     }
     impl<T> RollupStateClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        where
+            T: tonic::client::GrpcService<tonic::body::BoxBody>,
+            T::ResponseBody: Body + Send + Sync + 'static,
+            T::Error: Into<StdError>,
+            <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -227,15 +226,15 @@ pub mod rollup_state_client {
             inner: T,
             interceptor: F,
         ) -> RollupStateClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+            where
+                F: tonic::service::Interceptor,
+                T: tonic::codegen::Service<
+                    http::Request<tonic::body::BoxBody>,
+                    Response = http::Response<
+                        <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    >,
                 >,
-            >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
                 Into<StdError> + Send + Sync,
         {
             RollupStateClient::new(InterceptedService::new(inner, interceptor))
@@ -338,17 +337,17 @@ pub mod rollup_state_server {
             }
         }
         pub fn with_interceptor<F>(inner: T, interceptor: F) -> InterceptedService<Self, F>
-        where
-            F: tonic::service::Interceptor,
+            where
+                F: tonic::service::Interceptor,
         {
             InterceptedService::new(Self::new(inner), interceptor)
         }
     }
     impl<T, B> tonic::codegen::Service<http::Request<B>> for RollupStateServer<T>
-    where
-        T: RollupState,
-        B: Body + Send + Sync + 'static,
-        B::Error: Into<StdError> + Send + 'static,
+        where
+            T: RollupState,
+            B: Body + Send + Sync + 'static,
+            B::Error: Into<StdError> + Send + 'static,
     {
         type Response = http::Response<tonic::body::BoxBody>;
         type Error = Never;
@@ -363,7 +362,7 @@ pub mod rollup_state_server {
                     #[allow(non_camel_case_types)]
                     struct L2BlocksQuerySvc<T: RollupState>(pub Arc<T>);
                     impl<T: RollupState> tonic::server::UnaryService<super::L2BlocksQueryRequest>
-                        for L2BlocksQuerySvc<T>
+                    for L2BlocksQuerySvc<T>
                     {
                         type Response = super::L2BlocksQueryResponse;
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
@@ -396,7 +395,7 @@ pub mod rollup_state_server {
                     #[allow(non_camel_case_types)]
                     struct L2BlockQuerySvc<T: RollupState>(pub Arc<T>);
                     impl<T: RollupState> tonic::server::UnaryService<super::L2BlockQueryRequest>
-                        for L2BlockQuerySvc<T>
+                    for L2BlockQuerySvc<T>
                     {
                         type Response = super::L2BlockQueryResponse;
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
@@ -429,8 +428,8 @@ pub mod rollup_state_server {
                     #[allow(non_camel_case_types)]
                     struct TokenBalanceQuerySvc<T: RollupState>(pub Arc<T>);
                     impl<T: RollupState>
-                        tonic::server::UnaryService<super::TokenBalanceQueryRequest>
-                        for TokenBalanceQuerySvc<T>
+                    tonic::server::UnaryService<super::TokenBalanceQueryRequest>
+                    for TokenBalanceQuerySvc<T>
                     {
                         type Response = super::TokenBalanceQueryResponse;
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
