@@ -127,13 +127,9 @@ pub struct TransferTx {
     #[prost(string, tag = "4")]
     pub amount: ::prost::alloc::string::String,
     #[prost(string, tag = "5")]
-    pub from_old_balance: ::prost::alloc::string::String,
+    pub old_balance: ::prost::alloc::string::String,
     #[prost(string, tag = "6")]
-    pub from_new_balance: ::prost::alloc::string::String,
-    #[prost(string, tag = "7")]
-    pub to_old_balance: ::prost::alloc::string::String,
-    #[prost(string, tag = "8")]
-    pub to_new_balance: ::prost::alloc::string::String,
+    pub new_balance: ::prost::alloc::string::String,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct SpotTradeTx {
