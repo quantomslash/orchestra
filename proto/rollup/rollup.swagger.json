@@ -212,12 +212,6 @@
         },
         "amount": {
           "type": "string"
-        },
-        "oldBalance": {
-          "type": "string"
-        },
-        "newBalance": {
-          "type": "string"
         }
       }
     },
@@ -363,12 +357,6 @@
         },
         "amount": {
           "type": "string"
-        },
-        "oldBalance": {
-          "type": "string"
-        },
-        "newBalance": {
-          "type": "string"
         }
       }
     },
@@ -399,9 +387,6 @@
           "type": "string"
         },
         "oldBalance": {
-          "type": "string"
-        },
-        "newBalance": {
           "type": "string"
         }
       }
