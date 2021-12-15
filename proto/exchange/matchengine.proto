@@ -70,13 +70,6 @@ service Matchengine {
   rpc ReloadMarkets(ReloadMarketsRequest) returns (SimpleSuccessResponse) {}
   rpc MarketSummary(MarketSummaryRequest) returns (MarketSummaryResponse) {}
 
-  rpc Transfer(TransferRequest) returns (TransferResponse) {
-    option (google.api.http) = {
-      post : "/api/exchange/action/transfer"
-      body : "*"
-    };
-  }
-
   // Used only in development
   rpc DebugDump(DebugDumpRequest) returns (DebugDumpResponse) {}
   rpc DebugReset(DebugResetRequest) returns (DebugResetResponse) {}
@@ -284,18 +277,6 @@ message ReloadMarketsRequest { bool from_scratch = 1; }
 
 message SimpleSuccessResponse {}
 
-message TransferRequest {
-  string to = 1;   // user_id
-  string asset = 2;
-  string delta = 3; // should be > 0
-  string memo = 4;
-}
-
-message TransferResponse {
-  bool success = 1;
-  string asset = 2;
-  string balance_from = 3;
-}
 message DebugDumpRequest {}
 message DebugDumpResponse {}
 message DebugResetRequest {}
