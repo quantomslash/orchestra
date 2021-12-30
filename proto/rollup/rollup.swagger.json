@@ -85,38 +85,6 @@
         ]
       }
     },
-    "/api/explorer/register_user": {
-      "post": {
-        "operationId": "RollupState_RegisterUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/rollup_stateRegisterUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/rollup_stateRegisterUserRequest"
-            }
-          }
-        ],
-        "tags": [
-          "RollupState"
-        ]
-      }
-    },
     "/api/explorer/token_balance/{accountId}": {
       "get": {
         "operationId": "RollupState_TokenBalanceQuery",
@@ -355,29 +323,6 @@
         }
       }
     },
-    "rollup_stateRegisterUserRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "l1Address": {
-          "type": "string"
-        },
-        "l2Pubkey": {
-          "type": "string"
-        }
-      }
-    },
-    "rollup_stateRegisterUserResponse": {
-      "type": "object",
-      "properties": {
-        "userInfo": {
-          "$ref": "#/definitions/rollup_stateUserInfo"
-        }
-      }
-    },
     "rollup_stateSpotTradeTx": {
       "type": "object",
       "properties": {
@@ -488,7 +433,7 @@
       ],
       "default": "NOP"
     },
-    "rollup_stateUserInfo": {
+    "rollup_stateUserInfoQueryResponse": {
       "type": "object",
       "properties": {
         "userId": {
@@ -504,14 +449,6 @@
         },
         "l2Pubkey": {
           "type": "string"
-        }
-      }
-    },
-    "rollup_stateUserInfoQueryResponse": {
-      "type": "object",
-      "properties": {
-        "userInfo": {
-          "$ref": "#/definitions/rollup_stateUserInfo"
         }
       }
     },
