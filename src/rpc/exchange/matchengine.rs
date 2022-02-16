@@ -1,21 +1,7 @@
-///
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
-pub struct UserInfo {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
-    #[prost(string, tag = "2")]
-    pub l1_address: ::prost::alloc::string::String,
-    #[prost(string, tag = "3")]
-    pub l2_pubkey: ::prost::alloc::string::String,
-    #[prost(string, optional, tag = "4")]
-    pub tx_hash: ::core::option::Option<::prost::alloc::string::String>,
-}
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct BalanceQueryRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
     /// optional
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag = "1")]
     pub assets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
@@ -37,8 +23,8 @@ pub mod balance_query_response {
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct BalanceUpdateRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
+    #[prost(string, tag = "1")]
+    pub user_id: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub asset: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
@@ -49,8 +35,6 @@ pub struct BalanceUpdateRequest {
     pub delta: ::prost::alloc::string::String,
     #[prost(string, tag = "6")]
     pub detail: ::prost::alloc::string::String,
-    #[prost(string, optional, tag = "7")]
-    pub tx_hash: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct BalanceUpdateResponse {}
@@ -70,16 +54,8 @@ pub mod asset_list_response {
         pub symbol: ::prost::alloc::string::String,
         #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
-        #[prost(int32, tag = "3")]
-        pub chain_id: i32,
-        #[prost(string, tag = "4")]
-        pub token_address: ::prost::alloc::string::String,
-        #[prost(uint32, tag = "5")]
+        #[prost(uint32, tag = "3")]
         pub precision: u32,
-        #[prost(string, tag = "6")]
-        pub logo_uri: ::prost::alloc::string::String,
-        #[prost(int32, tag = "7")]
-        pub inner_id: i32,
     }
 }
 ///
@@ -114,35 +90,28 @@ pub mod asset_summary_response {
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderPutRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "1")]
     pub market: ::prost::alloc::string::String,
-    #[prost(enumeration = "OrderSide", tag = "3")]
+    #[prost(enumeration = "OrderSide", tag = "2")]
     pub order_side: i32,
-    #[prost(enumeration = "OrderType", tag = "4")]
+    #[prost(enumeration = "OrderType", tag = "3")]
     pub order_type: i32,
     /// always amount for base, even for market bid
-    #[prost(string, tag = "5")]
+    #[prost(string, tag = "4")]
     pub amount: ::prost::alloc::string::String,
     /// should be empty or zero for market order
-    #[prost(string, tag = "6")]
+    #[prost(string, tag = "5")]
     pub price: ::prost::alloc::string::String,
     /// onyl valid for market bid order
-    #[prost(string, tag = "7")]
+    #[prost(string, tag = "6")]
     pub quote_limit: ::prost::alloc::string::String,
-    #[prost(string, tag = "8")]
+    #[prost(string, tag = "7")]
     pub taker_fee: ::prost::alloc::string::String,
-    #[prost(string, tag = "9")]
+    #[prost(string, tag = "8")]
     pub maker_fee: ::prost::alloc::string::String,
     /// Ensures an Limit order is only subject to Maker Fees
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "9")]
     pub post_only: bool,
-    /// (ignored for Market orders).
-    ///
-    /// bjj signature used in Fluidex
-    #[prost(string, tag = "11")]
-    pub signature: ::prost::alloc::string::String,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderInfo {
@@ -154,40 +123,36 @@ pub struct OrderInfo {
     pub order_side: i32,
     #[prost(enumeration = "OrderType", tag = "4")]
     pub order_type: i32,
-    #[prost(uint32, tag = "5")]
-    pub user_id: u32,
-    #[prost(int64, tag = "6")]
+    #[prost(int64, tag = "5")]
     pub create_time: i64,
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag = "6")]
     pub update_time: i64,
-    #[prost(string, tag = "8")]
+    #[prost(string, tag = "7")]
     pub price: ::prost::alloc::string::String,
-    #[prost(string, tag = "9")]
+    #[prost(string, tag = "8")]
     pub amount: ::prost::alloc::string::String,
-    #[prost(string, tag = "10")]
+    #[prost(string, tag = "9")]
     pub taker_fee: ::prost::alloc::string::String,
-    #[prost(string, tag = "11")]
+    #[prost(string, tag = "10")]
     pub maker_fee: ::prost::alloc::string::String,
-    #[prost(string, tag = "12")]
+    #[prost(string, tag = "11")]
     pub remain: ::prost::alloc::string::String,
-    #[prost(string, tag = "13")]
+    #[prost(string, tag = "12")]
     pub finished_base: ::prost::alloc::string::String,
-    #[prost(string, tag = "14")]
+    #[prost(string, tag = "13")]
     pub finished_quote: ::prost::alloc::string::String,
-    #[prost(string, tag = "15")]
+    #[prost(string, tag = "14")]
     pub finished_fee: ::prost::alloc::string::String,
-    #[prost(bool, tag = "16")]
+    #[prost(bool, tag = "15")]
     pub post_only: bool,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderQueryRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "1")]
     pub market: ::prost::alloc::string::String,
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag = "2")]
     pub offset: i32,
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag = "3")]
     pub limit: i32,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
@@ -203,18 +168,14 @@ pub struct OrderQueryResponse {
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderCancelRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "1")]
     pub market: ::prost::alloc::string::String,
-    #[prost(uint64, tag = "3")]
+    #[prost(uint64, tag = "2")]
     pub order_id: u64,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct OrderCancelAllRequest {
-    #[prost(uint32, tag = "1")]
-    pub user_id: u32,
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "1")]
     pub market: ::prost::alloc::string::String,
 }
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
@@ -363,33 +324,6 @@ pub struct ReloadMarketsRequest {
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct SimpleSuccessResponse {}
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
-pub struct TransferRequest {
-    /// user_id
-    #[prost(uint32, tag = "1")]
-    pub from: u32,
-    /// user_id
-    #[prost(uint32, tag = "2")]
-    pub to: u32,
-    #[prost(string, tag = "3")]
-    pub asset: ::prost::alloc::string::String,
-    /// should be > 0
-    #[prost(string, tag = "4")]
-    pub delta: ::prost::alloc::string::String,
-    #[prost(string, tag = "5")]
-    pub memo: ::prost::alloc::string::String,
-    #[prost(string, tag = "6")]
-    pub signature: ::prost::alloc::string::String,
-}
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
-pub struct TransferResponse {
-    #[prost(bool, tag = "1")]
-    pub success: bool,
-    #[prost(string, tag = "2")]
-    pub asset: ::prost::alloc::string::String,
-    #[prost(string, tag = "3")]
-    pub balance_from: ::prost::alloc::string::String,
-}
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct DebugDumpRequest {}
 #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct DebugDumpResponse {}
@@ -514,21 +448,6 @@ pub mod matchengine_client {
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
-        }
-        pub async fn register_user(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UserInfo>,
-        ) -> Result<tonic::Response<super::UserInfo>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/matchengine.Matchengine/RegisterUser");
-            self.inner.unary(request.into_request(), path, codec).await
         }
         pub async fn balance_query(
             &mut self,
@@ -721,20 +640,6 @@ pub mod matchengine_client {
                 http::uri::PathAndQuery::from_static("/matchengine.Matchengine/MarketSummary");
             self.inner.unary(request.into_request(), path, codec).await
         }
-        pub async fn transfer(
-            &mut self,
-            request: impl tonic::IntoRequest<super::TransferRequest>,
-        ) -> Result<tonic::Response<super::TransferResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/matchengine.Matchengine/Transfer");
-            self.inner.unary(request.into_request(), path, codec).await
-        }
         #[doc = " Used only in development"]
         pub async fn debug_dump(
             &mut self,
@@ -787,10 +692,6 @@ pub mod matchengine_server {
     #[doc = "Generated trait containing gRPC methods that should be implemented for use with MatchengineServer."]
     #[async_trait]
     pub trait Matchengine: Send + Sync + 'static {
-        async fn register_user(
-            &self,
-            request: tonic::Request<super::UserInfo>,
-        ) -> Result<tonic::Response<super::UserInfo>, tonic::Status>;
         async fn balance_query(
             &self,
             request: tonic::Request<super::BalanceQueryRequest>,
@@ -845,10 +746,6 @@ pub mod matchengine_server {
             &self,
             request: tonic::Request<super::MarketSummaryRequest>,
         ) -> Result<tonic::Response<super::MarketSummaryResponse>, tonic::Status>;
-        async fn transfer(
-            &self,
-            request: tonic::Request<super::TransferRequest>,
-        ) -> Result<tonic::Response<super::TransferResponse>, tonic::Status>;
         #[doc = " Used only in development"]
         async fn debug_dump(
             &self,
@@ -902,37 +799,6 @@ pub mod matchengine_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
-                "/matchengine.Matchengine/RegisterUser" => {
-                    #[allow(non_camel_case_types)]
-                    struct RegisterUserSvc<T: Matchengine>(pub Arc<T>);
-                    impl<T: Matchengine> tonic::server::UnaryService<super::UserInfo> for RegisterUserSvc<T> {
-                        type Response = super::UserInfo;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-                        fn call(
-                            &mut self,
-                            request: tonic::Request<super::UserInfo>,
-                        ) -> Self::Future {
-                            let inner = self.0.clone();
-                            let fut = async move { (*inner).register_user(request).await };
-                            Box::pin(fut)
-                        }
-                    }
-                    let accept_compression_encodings = self.accept_compression_encodings;
-                    let send_compression_encodings = self.send_compression_encodings;
-                    let inner = self.inner.clone();
-                    let fut = async move {
-                        let inner = inner.0;
-                        let method = RegisterUserSvc(inner);
-                        let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
-                            accept_compression_encodings,
-                            send_compression_encodings,
-                        );
-                        let res = grpc.unary(method, req).await;
-                        Ok(res)
-                    };
-                    Box::pin(fut)
-                }
                 "/matchengine.Matchengine/BalanceQuery" => {
                     #[allow(non_camel_case_types)]
                     struct BalanceQuerySvc<T: Matchengine>(pub Arc<T>);
@@ -1340,37 +1206,6 @@ pub mod matchengine_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = MarketSummarySvc(inner);
-                        let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
-                            accept_compression_encodings,
-                            send_compression_encodings,
-                        );
-                        let res = grpc.unary(method, req).await;
-                        Ok(res)
-                    };
-                    Box::pin(fut)
-                }
-                "/matchengine.Matchengine/Transfer" => {
-                    #[allow(non_camel_case_types)]
-                    struct TransferSvc<T: Matchengine>(pub Arc<T>);
-                    impl<T: Matchengine> tonic::server::UnaryService<super::TransferRequest> for TransferSvc<T> {
-                        type Response = super::TransferResponse;
-                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-                        fn call(
-                            &mut self,
-                            request: tonic::Request<super::TransferRequest>,
-                        ) -> Self::Future {
-                            let inner = self.0.clone();
-                            let fut = async move { (*inner).transfer(request).await };
-                            Box::pin(fut)
-                        }
-                    }
-                    let accept_compression_encodings = self.accept_compression_encodings;
-                    let send_compression_encodings = self.send_compression_encodings;
-                    let inner = self.inner.clone();
-                    let fut = async move {
-                        let inner = inner.0;
-                        let method = TransferSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec).apply_compression_config(
                             accept_compression_encodings,

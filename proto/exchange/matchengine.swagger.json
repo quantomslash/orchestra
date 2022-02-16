@@ -38,7 +38,7 @@
         ]
       }
     },
-    "/api/exchange/action/balances/{userId}": {
+    "/api/exchange/action/balances": {
       "get": {
         "operationId": "Matchengine_BalanceQuery",
         "responses": {
@@ -56,13 +56,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
           {
             "name": "assets",
             "in": "query",
@@ -128,7 +121,7 @@
         ]
       }
     },
-    "/api/exchange/action/cancelorder/{market}/{userId}/{orderId}": {
+    "/api/exchange/action/cancelorder/{market}/{orderId}": {
       "post": {
         "operationId": "Matchengine_OrderCancel",
         "responses": {
@@ -153,13 +146,6 @@
             "type": "string"
           },
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
             "name": "orderId",
             "in": "path",
             "required": true,
@@ -180,7 +166,7 @@
         ]
       }
     },
-    "/api/exchange/action/cancelorders/{market}/{userId}": {
+    "/api/exchange/action/cancelorders/{market}": {
       "post": {
         "operationId": "Matchengine_OrderCancelAll",
         "responses": {
@@ -203,13 +189,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
           },
           {
             "name": "body",
@@ -324,7 +303,7 @@
         ]
       }
     },
-    "/api/exchange/action/orders/{market}/{userId}": {
+    "/api/exchange/action/orders/{market}": {
       "get": {
         "operationId": "Matchengine_OrderQuery",
         "responses": {
@@ -349,13 +328,6 @@
             "type": "string"
           },
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
             "name": "offset",
             "in": "query",
             "required": false,
@@ -368,70 +340,6 @@
             "required": false,
             "type": "integer",
             "format": "int32"
-          }
-        ],
-        "tags": [
-          "Matchengine"
-        ]
-      }
-    },
-    "/api/exchange/action/registeruser": {
-      "post": {
-        "operationId": "Matchengine_RegisterUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/matchengineUserInfo"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/matchengineUserInfo"
-            }
-          }
-        ],
-        "tags": [
-          "Matchengine"
-        ]
-      }
-    },
-    "/api/exchange/action/transfer": {
-      "post": {
-        "operationId": "Matchengine_Transfer",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/matchengineTransferResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/matchengineTransferRequest"
-            }
           }
         ],
         "tags": [
@@ -482,23 +390,9 @@
         "name": {
           "type": "string"
         },
-        "chainId": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "tokenAddress": {
-          "type": "string"
-        },
         "precision": {
           "type": "integer",
           "format": "int64"
-        },
-        "logoUri": {
-          "type": "string"
-        },
-        "innerId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -608,8 +502,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "asset": {
           "type": "string"
@@ -626,12 +519,6 @@
         },
         "detail": {
           "type": "string"
-        },
-        "signature": {
-          "type": "string"
-        },
-        "logMetadata": {
-          "$ref": "#/definitions/matchengineEthLogMetadata"
         }
       }
     },
@@ -664,21 +551,6 @@
     },
     "matchengineDebugResetResponse": {
       "type": "object"
-    },
-    "matchengineEthLogMetadata": {
-      "type": "object",
-      "properties": {
-        "blockNumber": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "txHash": {
-          "type": "string"
-        },
-        "logIndex": {
-          "type": "string"
-        }
-      }
     },
     "matchengineMarketListResponse": {
       "type": "object",
@@ -744,10 +616,6 @@
         "orderType": {
           "$ref": "#/definitions/matchengineOrderType"
         },
-        "userId": {
-          "type": "integer",
-          "format": "int64"
-        },
         "createTime": {
           "type": "string",
           "format": "int64"
@@ -788,10 +656,6 @@
     "matchengineOrderPutRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "integer",
-          "format": "int64"
-        },
         "market": {
           "type": "string"
         },
@@ -818,10 +682,6 @@
         },
         "postOnly": {
           "type": "boolean"
-        },
-        "signature": {
-          "type": "string",
-          "description": "(ignored for Market orders)."
         }
       }
     },
@@ -874,63 +734,6 @@
     },
     "matchengineSimpleSuccessResponse": {
       "type": "object"
-    },
-    "matchengineTransferRequest": {
-      "type": "object",
-      "properties": {
-        "from": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "to": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "asset": {
-          "type": "string"
-        },
-        "delta": {
-          "type": "string"
-        },
-        "memo": {
-          "type": "string"
-        },
-        "signature": {
-          "type": "string"
-        }
-      }
-    },
-    "matchengineTransferResponse": {
-      "type": "object",
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "asset": {
-          "type": "string"
-        },
-        "balanceFrom": {
-          "type": "string"
-        }
-      }
-    },
-    "matchengineUserInfo": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "l1Address": {
-          "type": "string"
-        },
-        "l2Pubkey": {
-          "type": "string"
-        },
-        "logMetadata": {
-          "$ref": "#/definitions/matchengineEthLogMetadata"
-        }
-      }
     },
     "protobufAny": {
       "type": "object",
