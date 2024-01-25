@@ -1,7 +1,9 @@
 /// Defines the HTTP configuration for an API service. It contains a list of
 /// [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
 /// to one or more HTTP REST API methods.
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
+#[derive(serde::Serialize, serde::Deserialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Http {
     /// A list of HTTP configuration rules that apply to individual API methods.
     ///
@@ -30,29 +32,29 @@ pub struct Http {
 /// operation on a resource collection of messages:
 ///
 ///
-///     service Messaging {
-///       rpc GetMessage(GetMessageRequest) returns (Message) {
-///         option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
-///       }
-///     }
-///     message GetMessageRequest {
-///       message SubMessage {
-///         string subfield = 1;
-///       }
-///       string message_id = 1; // mapped to the URL
-///       SubMessage sub = 2;    // `sub.subfield` is url-mapped
-///     }
-///     message Message {
-///       string text = 1; // content of the resource
-///     }
+///      service Messaging {
+///        rpc GetMessage(GetMessageRequest) returns (Message) {
+///          option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
+///        }
+///      }
+///      message GetMessageRequest {
+///        message SubMessage {
+///          string subfield = 1;
+///        }
+///        string message_id = 1; // mapped to the URL
+///        SubMessage sub = 2;    // `sub.subfield` is url-mapped
+///      }
+///      message Message {
+///        string text = 1; // content of the resource
+///      }
 ///
 /// The same http annotation can alternatively be expressed inside the
 /// `GRPC API Configuration` YAML file.
 ///
-///     http:
-///       rules:
-///         - selector: <proto_package_name>.Messaging.GetMessage
-///           get: /v1/messages/{message_id}/{sub.subfield}
+///      http:
+///        rules:
+///          - selector: <proto_package_name>.Messaging.GetMessage
+///            get: /v1/messages/{message_id}/{sub.subfield}
 ///
 /// This definition enables an automatic, bidrectional mapping of HTTP
 /// JSON to RPC. Example:
@@ -70,19 +72,19 @@ pub struct Http {
 /// parameters. Assume the following definition of the request message:
 ///
 ///
-///     service Messaging {
-///       rpc GetMessage(GetMessageRequest) returns (Message) {
-///         option (google.api.http).get = "/v1/messages/{message_id}";
-///       }
-///     }
-///     message GetMessageRequest {
-///       message SubMessage {
-///         string subfield = 1;
-///       }
-///       string message_id = 1; // mapped to the URL
-///       int64 revision = 2;    // becomes a parameter
-///       SubMessage sub = 3;    // `sub.subfield` becomes a parameter
-///     }
+///      service Messaging {
+///        rpc GetMessage(GetMessageRequest) returns (Message) {
+///          option (google.api.http).get = "/v1/messages/{message_id}";
+///        }
+///      }
+///      message GetMessageRequest {
+///        message SubMessage {
+///          string subfield = 1;
+///        }
+///        string message_id = 1; // mapped to the URL
+///        int64 revision = 2;    // becomes a parameter
+///        SubMessage sub = 3;    // `sub.subfield` becomes a parameter
+///      }
 ///
 ///
 /// This enables a HTTP JSON to RPC mapping as below:
@@ -101,18 +103,18 @@ pub struct Http {
 /// message resource collection:
 ///
 ///
-///     service Messaging {
-///       rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
-///         option (google.api.http) = {
-///           put: "/v1/messages/{message_id}"
-///           body: "message"
-///         };
-///       }
-///     }
-///     message UpdateMessageRequest {
-///       string message_id = 1; // mapped to the URL
-///       Message message = 2;   // mapped to the body
-///     }
+///      service Messaging {
+///        rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
+///          option (google.api.http) = {
+///            put: "/v1/messages/{message_id}"
+///            body: "message"
+///          };
+///        }
+///      }
+///      message UpdateMessageRequest {
+///        string message_id = 1; // mapped to the URL
+///        Message message = 2;   // mapped to the body
+///      }
 ///
 ///
 /// The following HTTP JSON to RPC mapping is enabled, where the
@@ -128,18 +130,18 @@ pub struct Http {
 /// request body.  This enables the following alternative definition of
 /// the update method:
 ///
-///     service Messaging {
-///       rpc UpdateMessage(Message) returns (Message) {
-///         option (google.api.http) = {
-///           put: "/v1/messages/{message_id}"
-///           body: "*"
-///         };
-///       }
-///     }
-///     message Message {
-///       string message_id = 1;
-///       string text = 2;
-///     }
+///      service Messaging {
+///        rpc UpdateMessage(Message) returns (Message) {
+///          option (google.api.http) = {
+///            put: "/v1/messages/{message_id}"
+///            body: "*"
+///          };
+///        }
+///      }
+///      message Message {
+///        string message_id = 1;
+///        string text = 2;
+///      }
 ///
 ///
 /// The following HTTP JSON to RPC mapping is enabled:
@@ -157,20 +159,20 @@ pub struct Http {
 /// It is possible to define multiple HTTP methods for one RPC by using
 /// the `additional_bindings` option. Example:
 ///
-///     service Messaging {
-///       rpc GetMessage(GetMessageRequest) returns (Message) {
-///         option (google.api.http) = {
-///           get: "/v1/messages/{message_id}"
-///           additional_bindings {
-///             get: "/v1/users/{user_id}/messages/{message_id}"
-///           }
-///         };
-///       }
-///     }
-///     message GetMessageRequest {
-///       string message_id = 1;
-///       string user_id = 2;
-///     }
+///      service Messaging {
+///        rpc GetMessage(GetMessageRequest) returns (Message) {
+///          option (google.api.http) = {
+///            get: "/v1/messages/{message_id}"
+///            additional_bindings {
+///              get: "/v1/users/{user_id}/messages/{message_id}"
+///            }
+///          };
+///        }
+///      }
+///      message GetMessageRequest {
+///        string message_id = 1;
+///        string user_id = 2;
+///      }
 ///
 ///
 /// This enables the following two alternative HTTP JSON to RPC
@@ -187,24 +189,24 @@ pub struct Http {
 /// to the request message are as follows:
 ///
 /// 1. The `body` field specifies either `*` or a field path, or is
-///    omitted. If omitted, it indicates there is no HTTP request body.
+///     omitted. If omitted, it indicates there is no HTTP request body.
 /// 2. Leaf fields (recursive expansion of nested messages in the
-///    request) can be classified into three types:
-///     (a) Matched in the URL template.
-///     (b) Covered by body (if body is `*`, everything except (a) fields;
-///         else everything under the body field)
-///     (c) All other fields.
+///     request) can be classified into three types:
+///      (a) Matched in the URL template.
+///      (b) Covered by body (if body is `*`, everything except (a) fields;
+///          else everything under the body field)
+///      (c) All other fields.
 /// 3. URL query parameters found in the HTTP request are mapped to (c) fields.
 /// 4. Any body sent with an HTTP request can contain only (b) fields.
 ///
 /// The syntax of the path template is as follows:
 ///
-///     Template = "/" Segments [ Verb ] ;
-///     Segments = Segment { "/" Segment } ;
-///     Segment  = "*" | "**" | LITERAL | Variable ;
-///     Variable = "{" FieldPath [ "=" Segments ] "}" ;
-///     FieldPath = IDENT { "." IDENT } ;
-///     Verb     = ":" LITERAL ;
+///      Template = "/" Segments \[ Verb \] ;
+///      Segments = Segment { "/" Segment } ;
+///      Segment  = "*" | "**" | LITERAL | Variable ;
+///      Variable = "{" FieldPath \[ "=" Segments \] "}" ;
+///      FieldPath = IDENT { "." IDENT } ;
+///      Verb     = ":" LITERAL ;
 ///
 /// The syntax `*` matches a single path segment. The syntax `**` matches zero
 /// or more path segments, which must be the last part of the path except the
@@ -217,16 +219,16 @@ pub struct Http {
 ///
 /// If a variable contains exactly one path segment, such as `"{var}"` or
 /// `"{var=*}"`, when such a variable is expanded into a URL path, all characters
-/// except `[-_.~0-9a-zA-Z]` are percent-encoded. Such variables show up in the
+/// except `\[-_.~0-9a-zA-Z\]` are percent-encoded. Such variables show up in the
 /// Discovery Document as `{var}`.
 ///
 /// If a variable contains one or more path segments, such as `"{var=foo/*}"`
 /// or `"{var=**}"`, when such a variable is expanded into a URL path, all
-/// characters except `[-_.~/0-9a-zA-Z]` are percent-encoded. Such variables
+/// characters except `\[-_.~/0-9a-zA-Z\]` are percent-encoded. Such variables
 /// show up in the Discovery Document as `{+var}`.
 ///
 /// NOTE: While the single segment variable matches the semantics of
-/// [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2
+/// [RFC 6570](<https://tools.ietf.org/html/rfc6570>) Section 3.2.2
 /// Simple String Expansion, the multi segment variable **does not** match
 /// RFC 6570 Reserved Expansion. The reason is that the Reserved Expansion
 /// does not expand special characters like `?` and `#`, which would lead
@@ -234,7 +236,9 @@ pub struct Http {
 ///
 /// NOTE: the field paths in variables and in the `body` must not refer to
 /// repeated fields or map fields.
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
+#[derive(serde::Serialize, serde::Deserialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRule {
     /// Selects methods to which this rule applies.
     ///
@@ -268,7 +272,9 @@ pub mod http_rule {
     /// Determines the URL pattern is matched by this rules. This pattern can be
     /// used with any of the {get|put|post|delete|patch} methods. A custom method
     /// can be defined using the 'custom' field.
-    #[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Oneof)]
+    #[derive(serde::Serialize, serde::Deserialize)]
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Pattern {
         /// Used for listing and getting information about resources.
         #[prost(string, tag = "2")]
@@ -294,7 +300,9 @@ pub mod http_rule {
     }
 }
 /// A custom pattern is used for defining custom HTTP verb.
-#[derive(serde::Serialize, serde::Deserialize, Clone, PartialEq, ::prost::Message)]
+#[derive(serde::Serialize, serde::Deserialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomHttpPattern {
     /// The name of this custom HTTP verb.
     #[prost(string, tag = "1")]
