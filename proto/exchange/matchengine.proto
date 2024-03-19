@@ -143,6 +143,25 @@ enum ResultCode {
   INTERNAL_ERROR = 1;
 }
 
+enum OrderPutStage {
+  PUT = 0;
+  MATCH = 1;
+  COMPLETED = 2;
+}
+
+message OrderPutRequestWithStages {
+  string market = 1;
+  OrderSide order_side = 2;
+  OrderType order_type = 3;
+  string amount = 4;  
+  string price = 5;       
+  string quote_limit = 6; 
+  string taker_fee = 7;
+  string maker_fee = 8;
+  bool post_only = 9;
+  OrderPutStage stage = 10; 
+}
+
 message OrderPutRequest {
   string market = 1;
   OrderSide order_side = 2;

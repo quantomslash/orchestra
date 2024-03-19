@@ -115,6 +115,31 @@ pub mod asset_summary_response {
 #[derive(serde::Serialize, serde::Deserialize)]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrderPutRequestWithStages {
+    #[prost(string, tag = "1")]
+    pub market: ::prost::alloc::string::String,
+    #[prost(enumeration = "OrderSide", tag = "2")]
+    pub order_side: i32,
+    #[prost(enumeration = "OrderType", tag = "3")]
+    pub order_type: i32,
+    #[prost(string, tag = "4")]
+    pub amount: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub price: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
+    pub quote_limit: ::prost::alloc::string::String,
+    #[prost(string, tag = "7")]
+    pub taker_fee: ::prost::alloc::string::String,
+    #[prost(string, tag = "8")]
+    pub maker_fee: ::prost::alloc::string::String,
+    #[prost(bool, tag = "9")]
+    pub post_only: bool,
+    #[prost(enumeration = "OrderPutStage", tag = "10")]
+    pub stage: i32,
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderPutRequest {
     #[prost(string, tag = "1")]
     pub market: ::prost::alloc::string::String,
@@ -496,6 +521,36 @@ impl ResultCode {
         match value {
             "SUCCESS" => Some(Self::Success),
             "INTERNAL_ERROR" => Some(Self::InternalError),
+            _ => None,
+        }
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum OrderPutStage {
+    Put = 0,
+    Match = 1,
+    Completed = 2,
+}
+impl OrderPutStage {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            OrderPutStage::Put => "PUT",
+            OrderPutStage::Match => "MATCH",
+            OrderPutStage::Completed => "COMPLETED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PUT" => Some(Self::Put),
+            "MATCH" => Some(Self::Match),
+            "COMPLETED" => Some(Self::Completed),
             _ => None,
         }
     }
